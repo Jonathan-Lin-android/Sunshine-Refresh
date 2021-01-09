@@ -15,14 +15,26 @@
  */
 package com.example.android.sunshine;
 
+import android.net.Network;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import com.example.android.sunshine.data.SunshinePreferences;
+import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
+import com.example.android.sunshine.utilities.SunshineDateUtils;
+import java.io.IOException;
+import java.net.URL;
+import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView weatherDataTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*
         // dummy weather data
         String[] rgDummyWeatherData = {
                 "Today, May 17 - Clear - 17°C / 15°C",
@@ -40,14 +52,49 @@ public class MainActivity extends AppCompatActivity {
                 "Sun, May 29 - Apocalypse - 16°C / 8°C",
                 "Mon, May 30 - Post Apocalypse - 15°C / 10°C",
         };
-
+*/
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_forecast);
 
-        TextView weatherDataTextView = (TextView) findViewById(R.id.tv_weather_data);
-        for(String s : rgDummyWeatherData) {
-            weatherDataTextView.append(s + "\n\n\n");
+        weatherDataTextView = (TextView) findViewById(R.id.tv_weather_data);
+//"94043,USA";
+        new FetchWeatherTask().execute(SunshinePreferences.getPreferredWeatherLocation(this));
+
+    }
+
+
+    /*
+    search based on location. (user entered text) or dummy location. default preferred location
+    build a url based on query
+    query the database and return response (JSONString)
+    display the string.
+     */
+    class FetchWeatherTask extends AsyncTask<String, Void, String []>
+    {
+        @Override
+        protected String [] doInBackground(final String... strSearch) {
+            //bilding URL
+            URL builtURL = NetworkUtils.buildUrl(strSearch[0]);
+
+            //query
+            String[] parsedJSONResponse = null;
+            try {
+                String jsonStrResponse = NetworkUtils.getResponseFromHttpUrl(builtURL);
+                parsedJSONResponse= OpenWeatherJsonUtils.getSimpleWeatherStringsFromJson(MainActivity.this, jsonStrResponse);
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return parsedJSONResponse;
+        }
+
+        @Override
+        protected void onPostExecute(final String [] jsonStrResult) {
+            //display JSON result / parsed josn result
+            for (String s : jsonStrResult)
+                weatherDataTextView.append(s + "\n\n\n");
+
         }
     }
+
 }

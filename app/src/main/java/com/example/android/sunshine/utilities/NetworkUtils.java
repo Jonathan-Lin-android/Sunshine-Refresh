@@ -15,9 +15,12 @@
  */
 package com.example.android.sunshine.utilities;
 
+import android.net.Uri;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -65,8 +68,17 @@ public final class NetworkUtils {
      * @return The URL to use to query the weather server.
      */
     public static URL buildUrl(String locationQuery) {
-        /** This will be implemented in a future lesson **/
-        return null;
+        Uri uri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, locationQuery)
+                .build();
+        URL builtURL = null;
+        try{
+            builtURL = new URL(uri.toString());
+        } catch (MalformedURLException e )
+        {
+            e.printStackTrace();
+        }
+        return builtURL;
     }
 
     /**
@@ -77,9 +89,25 @@ public final class NetworkUtils {
      * @param lon The longitude of the location
      * @return The Url to use to query the weather server.
      */
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    public static URL buildUrl(Double lat, Double lon) throws Exception {
+        // still needs testing.
+        throw new Exception("still needs testing");
+        /*
+        Uri uri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(LAT_PARAM, String.valueOf(lat))
+                .appendQueryParameter(LON_PARAM, String.valueOf(lon))
+                .build();
+
+        URL builtURL = null;
+        try {
+            builtURL = new URL(uri.toString());
+        } catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        return builtURL;
+
+         */
     }
 
     /**
