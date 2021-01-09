@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String[] doInBackground(final String... strSearch) {
             if (strSearch.length == 0) {
-                showErrorMessage("Search field is empty");
                 return null;
             }
             //bilding URL
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 parsedJSONResponse = OpenWeatherJsonUtils
                         .getSimpleWeatherStringsFromJson(MainActivity.this, jsonStrResponse);
             } catch (IOException | JSONException e) {
-                showErrorMessage();
                 e.printStackTrace();
             }
             return parsedJSONResponse;
@@ -108,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             mLoadingIndicatorProgressBar.setVisibility(View.INVISIBLE);
 
             if (jsonStrResult == null || jsonStrResult.length == 0) {
+                showErrorMessage();
                 return;
             }
             //display JSON result / parsed josn result
