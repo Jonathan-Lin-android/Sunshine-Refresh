@@ -23,7 +23,7 @@
     <!--It's good to keep this short, so your launcher icon isn't displayed with "The greatest Wea"-->
     <!--or something similar.-->
     <string name="app_name">Sunshine</string>
-
+    <string name="error_message"> An error has occurred. Please try again by clicking REFRESH </string>
 
     <!-- - - - - - - - - - - - - -->
     <!--Used by SunshineDateUtils-->
@@ -140,4 +140,13 @@
     <!--Used by SunshinePreferences-->
     <!-- - - - - - - - - - - - - - -->
     <!--NONE-->
+
+
+    <!-- - - - - - - - - - - - - - -->
+    <!--Used by Menu-->
+    <!-- - - - - - - - - - - - - - -->
+    <!--NONE-->
+    <string name="action_refresh">Refresh</string>
+
+
 </resources>
